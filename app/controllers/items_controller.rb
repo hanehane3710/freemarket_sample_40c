@@ -40,8 +40,7 @@ class ItemsController < ApplicationController
   end
 
   def pay
-    require "payjp"
-    Payjp.api_key = ENV['PAYJP_APP_KEY']
+    Payjp.api_key = ENV['PAYJP_API_SECRET']
       charge = Payjp::Charge.create(
         amount: @item.price,
         card: params[:'payjp-token'],
@@ -52,7 +51,7 @@ class ItemsController < ApplicationController
     @item.save
     redirect_to item_url(@item)
   end
-  
+
   def search
     @items = Item.where('name LIKE(?) or description LIKE(?)', "%#{params[:keyword]}%", "%#{params[:keyword]}%").order('created_at DESC')
   end
